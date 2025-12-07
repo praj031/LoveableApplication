@@ -3,16 +3,62 @@ package com.codingShuttle.loveable.loveable.service.impl;
 import com.codingShuttle.loveable.loveable.dto.project.ProjectRequest;
 import com.codingShuttle.loveable.loveable.dto.project.ProjectResponse;
 import com.codingShuttle.loveable.loveable.dto.project.ProjectSummaryResponse;
+import com.codingShuttle.loveable.loveable.entity.Project;
+import com.codingShuttle.loveable.loveable.entity.User;
+import com.codingShuttle.loveable.loveable.mapper.ProjectMapper;
+import com.codingShuttle.loveable.loveable.repository.ProjectRepository;
+import com.codingShuttle.loveable.loveable.repository.UserRepository;
 import com.codingShuttle.loveable.loveable.service.ProjectService;
+import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
+@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+@Transactional
 public class ProjectServiceImpl implements ProjectService {
+
+    ProjectRepository projectRepository;
+    UserRepository userRepository;
+    ProjectMapper projectMapper;
+
+    @Override
+    public ProjectResponse createProject(ProjectRequest request, Long userId) {
+
+        //Method which will create the project based on the user we have selected[User 1]
+        User owner = userRepository.findById(userId).orElseThrow();
+        Project project = Project.builder()
+                .name(request.name())
+                .owner(owner)
+                .isPublic(false)
+                .build();
+
+        project = projectRepository.save(project);
+        return projectMapper.toProjectResponse(project);
+    }
+
     @Override
     public List<ProjectSummaryResponse> getUserProjects(Long userId) {
-        return List.of();
+
+        //Method that will return all the project for a particular user.
+        //Converting our list to project to a list of summary response, as over here we are returning all the project for the user.
+
+        //Method 1
+//        return projectRepository.findAllAccessibleByUser(userId)
+//                .stream()
+//                .map(project -> projectMapper.toProjectSummaryResponse(project))
+//                .collect(Collectors.toList());
+
+        //Method 2
+        var projects = projectRepository.findAllAccessibleByUser(userId);
+        return projectMapper.toListOfProjectSummaryResponse(projects);
+
     }
 
     @Override
@@ -20,10 +66,7 @@ public class ProjectServiceImpl implements ProjectService {
         return null;
     }
 
-    @Override
-    public ProjectResponse createProject(ProjectRequest request, Long userId) {
-        return null;
-    }
+
 
     @Override
     public ProjectResponse updateProject(Long id, ProjectRequest request, Long userId) {
