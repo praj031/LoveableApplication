@@ -1,6 +1,8 @@
 package com.codingShuttle.loveable.loveable.dto.project;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record ProjectRequest(
-        String name
+        @NotBlank String name
 ) {
 }

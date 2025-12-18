@@ -10,6 +10,9 @@ public class LoveableApplication {
 		SpringApplication.run(LoveableApplication.class, args);
 	}
 
+
+    //Using generated security password: e3a2d683-ff9e-4119-a113-b46d95656f75
+
 }
 /*
 -- First run application logs
