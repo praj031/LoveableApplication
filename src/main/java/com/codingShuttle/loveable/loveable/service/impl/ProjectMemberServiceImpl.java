@@ -11,6 +11,7 @@ import com.codingShuttle.loveable.loveable.mapper.ProjectMemberMapper;
 import com.codingShuttle.loveable.loveable.repository.ProjectMemberRepository;
 import com.codingShuttle.loveable.loveable.repository.ProjectRepository;
 import com.codingShuttle.loveable.loveable.repository.UserRepository;
+import com.codingShuttle.loveable.loveable.security.AuthUtil;
 import com.codingShuttle.loveable.loveable.service.ProjectMemberService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
@@ -32,24 +33,24 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     ProjectRepository projectRepository;
     ProjectMemberMapper projectMemberMapper;
     UserRepository userRepository;
+    AuthUtil authUtil;
 
 
     @Override
-    //API to get all the project member
-    public List<MemberResponse> getProjectMembers(Long projectId, Long userId) {
+    public List<MemberResponse> getProjectMembers(Long projectId) {
+        Long userId = authUtil.getCurrentUserId();
         Project project = getAccessibleProjectById(projectId, userId);
 
         return projectMemberRepository.findByIdProjectId(projectId)
-                                                    .stream()
-                                                    .map(projectMemberMapper::toProjectMemberResponseFromMember)
-                                                    .toList();
-
+                .stream()
+                .map(projectMemberMapper::toProjectMemberResponseFromMember)
+                .toList();
     }
 
     @Override
-    public MemberResponse inviteMember(Long projectId, InviteMemberRequest request, Long userId) {
+    public MemberResponse inviteMember(Long projectId, InviteMemberRequest request) {
+        Long userId = authUtil.getCurrentUserId();
         Project project = getAccessibleProjectById(projectId, userId);
-
 
         User invitee = userRepository.findByUsername(request.username()).orElseThrow();
 
@@ -77,7 +78,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request, Long userId) {
+    public MemberResponse updateMemberRole(Long projectId, Long memberId, UpdateMemberRoleRequest request) {
+        Long userId = authUtil.getCurrentUserId();
         Project project = getAccessibleProjectById(projectId, userId);
 
         ProjectMemberId projectMemberId = new ProjectMemberId(projectId, memberId);
@@ -90,21 +92,19 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         return projectMemberMapper.toProjectMemberResponseFromMember(projectMember);
     }
 
+
     @Override
-    public MemberResponse deleteProjectMember(Long projectId, Long memberId, Long userId) {
+    public void removeProjectMember(Long projectId, Long memberId) {
+        Long userId = authUtil.getCurrentUserId();
         Project project = getAccessibleProjectById(projectId, userId);
 
-
-
         ProjectMemberId projectMemberId = new ProjectMemberId(projectId, memberId);
-        ProjectMember projectMember = projectMemberRepository.findById(projectMemberId)
-                .orElseThrow(() -> new RuntimeException("Member not found in project"));
+        if(!projectMemberRepository.existsById(projectMemberId)) {
+            throw new RuntimeException("Member not found in project");
+        }
 
         projectMemberRepository.deleteById(projectMemberId);
-
-        return projectMemberMapper.toProjectMemberResponseFromMember(projectMember);
     }
-
 
     ///  INTERNAL FUNCTIONS
 

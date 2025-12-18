@@ -25,21 +25,17 @@ public class WebSecurityConfig {
     //In spring the security configuration start from here, like this is the entry point after any kind of request is raised.
     //Ex : POST, GET, PUT, PATCH
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
         httpSecurity
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**","/error").permitAll()
-                        //.requestMatchers("/api/projects/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
-
                 )
-                .addFilterBefore(jwtAuthFilter , UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
-
     }
 
     @Bean
