@@ -16,6 +16,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  config:
+    import: optional:classpath:application-stripe.yaml
 
 server:
   port: 8082
@@ -23,3 +25,4 @@ server:
 jwt:
   secret-key: ahduiahf7erfdjsoihf4y52jfashf0usd0f0dfnisa843nakbfi33nr9g8
 ##Should not be exposed to production environment
+
