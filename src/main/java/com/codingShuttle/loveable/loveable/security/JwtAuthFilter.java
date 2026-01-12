@@ -24,7 +24,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //Used to check each request, to verify token, to check validity of token.
 
-      log.info("Incoming Request : {}",request.getRequestURI());
+      log.info("System out === Incoming Request : {}",request.getRequestURI());
 
       final String requestHeaderToken = request.getHeader("Authorization");
         if (requestHeaderToken == null || !requestHeaderToken.startsWith("Bearer ")) { // To check the token holods the value like "Bearer"

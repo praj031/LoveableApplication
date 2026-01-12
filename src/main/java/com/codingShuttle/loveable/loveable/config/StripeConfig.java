@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class StripeConfig {
 
-    @Value("${stripe.secretKey}")
+    @Value("${stripe.api.secretKey}")
     private String stripeSecretKey;
+    @Value("${stripe.api.publishKey}")
+    private String stripePublishKey;
+    @Value("${stripe.webhook.secreteKey}")
+    private String stripeWebhookSecreteKey;
 
     //@PostConstuct helps us to give logs
     @PostConstruct
@@ -18,7 +22,4 @@ public class StripeConfig {
         Stripe.apiKey = stripeSecretKey;  // Initialize Stripe SDK
     }
 
-    public String getStripeSecretKey() {
-        return stripeSecretKey;
-    }
 }

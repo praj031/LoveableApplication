@@ -8,6 +8,7 @@ import com.codingShuttle.loveable.loveable.entity.ProjectMember;
 import com.codingShuttle.loveable.loveable.entity.ProjectMemberId;
 import com.codingShuttle.loveable.loveable.entity.User;
 import com.codingShuttle.loveable.loveable.enums.ProjectRole;
+import com.codingShuttle.loveable.loveable.error.BadRequestException;
 import com.codingShuttle.loveable.loveable.error.ResourceNotFoundException;
 import com.codingShuttle.loveable.loveable.mapper.ProjectMapper;
 import com.codingShuttle.loveable.loveable.repository.ProjectMemberRepository;
@@ -16,6 +17,7 @@ import com.codingShuttle.loveable.loveable.repository.UserRepository;
 import com.codingShuttle.loveable.loveable.security.AuthUtil;
 import com.codingShuttle.loveable.loveable.security.SecurityExpressions;
 import com.codingShuttle.loveable.loveable.service.ProjectService;
+import com.codingShuttle.loveable.loveable.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +43,15 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectMemberRepository projectMemberRepository;
     AuthUtil authUtil;
     private final SecurityExpressions security;
+    SubscriptionService subscriptionService;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
+
+        if(!subscriptionService.canCreateNewProject()){
+            throw new BadRequestException("User cannot create the new project, with the current plan now, upgrade the plan ");
+        }
+
         Long userId = authUtil.getCurrentUserId();
 //        User owner = userRepository.findById(userId).orElseThrow(
 //                () -> new ResourceNotFoundException("User", userId.toString())

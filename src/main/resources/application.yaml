@@ -26,3 +26,5 @@ jwt:
   secret-key: ahduiahf7erfdjsoihf4y52jfashf0usd0f0dfnisa843nakbfi33nr9g8
 ##Should not be exposed to production environment
 
+##Generic URL for application
+client.url : http://localhost:8082

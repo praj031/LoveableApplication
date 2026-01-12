@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+<h1>✅ PRO Plan Activated!</h1>
+<p>Thank you for your purchase.</p>
+<div id="payment-status">Verifying...</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+    const stripe = Stripe('pk_test_YOUR_PUBLIC_KEY');
+
+    stripe.retrieveCheckoutSession(sessionId).then(({session}) => {
+        document.getElementById('payment-status').innerHTML = `
+                <p><strong>Order:</strong> ${session.id}</p>
+                <p><strong>Amount:</strong> $${(session.amount_total / 100).toFixed(2)}</p>
+                <p><strong>Status:</strong> ${session.payment_status}</p>
+            `;
+    }).catch(err => {
+        document.getElementById('payment-status').innerHTML = '<p>Payment verification failed</p>';
+    });
+</script>
+</body>
+</html>

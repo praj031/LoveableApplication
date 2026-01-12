@@ -40,7 +40,7 @@ public class AuthUtil {
                 .subject(user.getUsername())
                 .claim("userId",user.getId().toString())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis()+1000*60*10))
+                .expiration(new Date(System.currentTimeMillis()+1000*60*60*24*5))
                 .signWith(getSecretKey())
                 .compact();
 
