@@ -32,7 +32,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         String jwttoken = requestHeaderToken.split("Bearer ")[1]; // Split to get the first part
-        JwtUSerPrincipal user = authUtil.verifyAccessToken(jwttoken);
+        JwtUserPrincipal user = authUtil.verifyAccessToken(jwttoken);
 
         if(user != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UsernamePasswordAuthenticationToken authenticatiocnToken = new UsernamePasswordAuthenticationToken(user,null,user.authorities());

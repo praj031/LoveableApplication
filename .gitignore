@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/application-stripe.yaml
+/src/main/resources/application-keys.yaml

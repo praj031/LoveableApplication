@@ -2,11 +2,9 @@ package com.codingShuttle.loveable.loveable.security;
 
 
 import com.codingShuttle.loveable.loveable.entity.User;
-import com.sun.security.auth.UserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -46,7 +44,7 @@ public class AuthUtil {
 
     }
 
-    public JwtUSerPrincipal verifyAccessToken(String token){
+    public JwtUserPrincipal verifyAccessToken(String token){
 
         Claims claims = Jwts.parser()
                 .verifyWith(getSecretKey())
@@ -58,7 +56,7 @@ public class AuthUtil {
         Long userId = Long.parseLong(claims.get("userId", String.class));
         String username = claims.getSubject();
 
-        return new JwtUSerPrincipal(userId,username,new ArrayList<>());
+        return new JwtUserPrincipal(userId,username,new ArrayList<>());
         //This will verify the user and return us the JWT valid priciple that we can use it later
 
     }
@@ -66,7 +64,7 @@ public class AuthUtil {
     public long getCurrentUserId(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || !(authentication.getPrincipal() instanceof JwtUSerPrincipal userPrincipal)){
+        if(authentication == null || !(authentication.getPrincipal() instanceof JwtUserPrincipal userPrincipal)){
             throw new AuthenticationCredentialsNotFoundException("No JWT found");
         }
 

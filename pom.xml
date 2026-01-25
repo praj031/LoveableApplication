@@ -29,6 +29,7 @@
     <properties>
         <java.version>21</java.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <spring-ai.version>2.0.0-M1</spring-ai.version>
     </properties>
     <dependencies>
 
@@ -83,7 +84,6 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-
         <!-- For adding spring security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -114,8 +114,46 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-resolver-dns-native-macos</artifactId>
+            <version>4.1.128.Final</version>
+            <classifier>osx-aarch_64</classifier>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
 
+        <!-- Spring AI dependency -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-starter-model-openai</artifactId>
+        </dependency>
+        <!--To handle the mokHttp protocal -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.12.0</version>
+        </dependency>
+        <!-- Min IO -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.6.0</version>
+        </dependency>
     </dependencies>
+
+    <!-- Dedicated dependecy management of spring AI -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 
-public record JwtUSerPrincipal (
+public record JwtUserPrincipal(
         Long userId,
         String usename,
         List<GrantedAuthority> authorities

@@ -17,11 +17,13 @@ import com.codingShuttle.loveable.loveable.repository.UserRepository;
 import com.codingShuttle.loveable.loveable.security.AuthUtil;
 import com.codingShuttle.loveable.loveable.security.SecurityExpressions;
 import com.codingShuttle.loveable.loveable.service.ProjectService;
+import com.codingShuttle.loveable.loveable.service.ProjectTemplateService;
 import com.codingShuttle.loveable.loveable.service.SubscriptionService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +46,7 @@ public class ProjectServiceImpl implements ProjectService {
     AuthUtil authUtil;
     private final SecurityExpressions security;
     SubscriptionService subscriptionService;
+    ProjectTemplateService projectTemplateService;
 
     @Override
     public ProjectResponse createProject(ProjectRequest request) {
@@ -75,6 +78,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .project(project)
                 .build();
         projectMemberRepository.save(projectMember);
+
+        projectTemplateService.initializeProjectFromTemplate(project.getId());
 
         return projectMapper.toProjectResponse(project);
     }

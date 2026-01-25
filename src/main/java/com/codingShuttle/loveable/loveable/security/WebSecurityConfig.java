@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-    private final String[] endpoints = {"/api/auth/**", "/success.html", "/cancel.html","/webhooks/**"};
+    private final String[] endpoints = {"/api/auth/**", "/success.html", "/cancel.html","/webhooks/**","/api/chat/**"};
 
     //In spring the security configuration start from here, like this is the entry point after any kind of request is raised.
     //Ex : POST, GET, PUT, PATCH
