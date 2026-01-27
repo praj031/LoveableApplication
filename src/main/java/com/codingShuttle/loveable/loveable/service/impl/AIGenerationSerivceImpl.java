@@ -90,7 +90,17 @@ public class AIGenerationSerivceImpl implements AIGenerationService {
                     });
                 })
                 .doOnError(error -> log.error("Error during streaming for projectId: {}", projectId))
-                .map(response -> Objects.requireNonNull(response.getResult().getOutput().getText()));
+                //.map(response -> Objects.requireNonNull(response.getResult().getOutput().getText()));
+                .handle((resp, sink) -> {
+                    var result = resp != null ? resp.getResult() : null;
+                    var output = result != null ? result.getOutput() : null;
+                    var text   = output != null ? output.getText() : null;
+
+                    if (text != null && !text.isEmpty()) {
+                        sink.next(text);
+                    }
+                    // else: ignore non-text events
+                });
     }
 
     private void finalizeChats(String userMessage, ChatSession chatSession, String fullText, Long duration) {
