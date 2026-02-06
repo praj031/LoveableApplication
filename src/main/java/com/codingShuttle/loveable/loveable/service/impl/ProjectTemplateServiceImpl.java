@@ -11,6 +11,7 @@ import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class ProjectTemplateServiceImpl implements ProjectTemplateService {
     private static final String TARGET_BUCKET = "projects";
     private static final String TEMPLATE_NAME = "react-vite-tailwind-daisyui-starter";
 
-
+    @Transactional
     @Override
     public void initializeProjectFromTemplate(Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(
@@ -48,10 +49,16 @@ public class ProjectTemplateServiceImpl implements ProjectTemplateService {
 
             for (Result<Item> result : results) {
                 Item item = result.get();
+
+                if (item.isDir()) {
+                    continue;
+                }
+
+
                 String sourceKey = item.objectName();
 
                 String cleanPath = sourceKey.replaceFirst(TEMPLATE_NAME + "/", "");
-                String destKey = "Lovable Response with project id - "+projectId + "/" + cleanPath;
+                String destKey = projectId + "/" + cleanPath;
 
                 minioClient.copyObject(
                         CopyObjectArgs.builder()
