@@ -1,11 +1,13 @@
 package com.codingShuttle.loveable.loveable.security;
 
 
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-    private final String[] endpoints = {"/api/auth/**", "/success.html", "/cancel.html","/webhooks/**","/api/chat/**"};
+    private final String[] endpoints = {"/api/auth/**", "/success.html", "/cancel.html","/webhooks/**","/api/chat/**","/v3/api-docs/**",
+            "/swagger-ui/**"};
 
     //In spring the security configuration start from here, like this is the entry point after any kind of request is raised.
     //Ex : POST, GET, PUT, PATCH
@@ -31,8 +34,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
         httpSecurity
                 .csrf(csrfConfig -> csrfConfig.disable())
+                .cors(Customizer.withDefaults())
                 .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(endpoints).permitAll()
                         .anyRequest().authenticated()
                 )
