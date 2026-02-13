@@ -30,6 +30,7 @@ spring:
         options:
          # model: gpt-5-mini-2025-08-07
           model: gpt-5.2-2025-12-11
+         # model: gpt-5.2-codex
       embedding:
         options:
           model: text-embedding-3-small

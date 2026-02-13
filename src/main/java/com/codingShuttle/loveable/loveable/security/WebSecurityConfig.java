@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final HandlerExceptionResolver handlerExceptionResolver;
     private final String[] endpoints = {"/api/auth/**", "/success.html", "/cancel.html","/webhooks/**","/api/chat/**","/v3/api-docs/**",
             "/swagger-ui/**"};
 
@@ -42,7 +44,11 @@ public class WebSecurityConfig {
                         .requestMatchers(endpoints).permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandlingConfigurer ->
+                exceptionHandlingConfigurer.accessDeniedHandler((request, response, accessDeniedException) -> {
+                    handlerExceptionResolver.resolveException(request, response, null, accessDeniedException);
+                }));
 
         return httpSecurity.build();
     }

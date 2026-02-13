@@ -1,14 +1,11 @@
 package com.codingShuttle.loveable.loveable.controller;
 
 import com.codingShuttle.loveable.loveable.dto.project.FileContentResponse;
-import com.codingShuttle.loveable.loveable.dto.project.FileNode;
+import com.codingShuttle.loveable.loveable.dto.project.FileTreeResponse;
 import com.codingShuttle.loveable.loveable.service.ProjectFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,17 +17,14 @@ public class ProjectFileController {
     private final ProjectFileService projectFileService;
 
     @GetMapping
-    public ResponseEntity<List<FileNode>> getFileTree(@PathVariable Long projectId) {
-        Long userId = 1L;
+    public ResponseEntity<FileTreeResponse> getFileTree(@PathVariable Long projectId) {
         return ResponseEntity.ok(projectFileService.getFileTree(projectId));
     }
 
-    @GetMapping("/{*path}") // /src/hooks/get-user-hook.jsx
+    @GetMapping("/content")
     public ResponseEntity<FileContentResponse> getFile(
             @PathVariable Long projectId,
-            @PathVariable String path
-    ) {
-        Long userId = 1L;
+            @RequestParam String path) {
         return ResponseEntity.ok(projectFileService.getFileContent(projectId, path));
     }
 

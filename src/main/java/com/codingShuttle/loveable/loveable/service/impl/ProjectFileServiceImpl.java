@@ -2,6 +2,7 @@ package com.codingShuttle.loveable.loveable.service.impl;
 
 import com.codingShuttle.loveable.loveable.dto.project.FileContentResponse;
 import com.codingShuttle.loveable.loveable.dto.project.FileNode;
+import com.codingShuttle.loveable.loveable.dto.project.FileTreeResponse;
 import com.codingShuttle.loveable.loveable.entity.Project;
 import com.codingShuttle.loveable.loveable.entity.ProjectFile;
 import com.codingShuttle.loveable.loveable.error.ResourceNotFoundException;
@@ -40,11 +41,10 @@ public class ProjectFileServiceImpl implements ProjectFileService {
     private final ProjectFileMapper projectFileMapper;
 
     @Override
-    public List<FileNode> getFileTree(Long projectId) {
-        //Takes in all the list of file and convert it to file node.
-        //This will generate the file tree
+    public FileTreeResponse getFileTree(Long projectId) {
         List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
-        return projectFileMapper.toListOfFileNode(projectFileList);
+        List<FileNode> projectFileNodes = projectFileMapper.toListOfFileNode(projectFileList);
+        return new FileTreeResponse(projectFileNodes);
     }
 
     @Override

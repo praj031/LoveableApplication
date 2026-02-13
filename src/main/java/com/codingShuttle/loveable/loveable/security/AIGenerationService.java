@@ -1,11 +1,12 @@
 package com.codingShuttle.loveable.loveable.security;
 
 
+import com.codingShuttle.loveable.loveable.dto.chat.StreamResponse;
 import reactor.core.publisher.Flux;
 
 
 public interface AIGenerationService {
 
-    Flux<String> streamResponse(String message, Long projectId);
+    Flux<StreamResponse> streamResponse(String message, Long projectId);
 
 }
