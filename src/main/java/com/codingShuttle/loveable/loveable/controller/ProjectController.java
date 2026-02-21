@@ -1,9 +1,10 @@
 package com.codingShuttle.loveable.loveable.controller;
 
+import com.codingShuttle.loveable.loveable.dto.deploy.DeployResponse;
 import com.codingShuttle.loveable.loveable.dto.project.ProjectRequest;
 import com.codingShuttle.loveable.loveable.dto.project.ProjectResponse;
 import com.codingShuttle.loveable.loveable.dto.project.ProjectSummaryResponse;
-import com.codingShuttle.loveable.loveable.security.AuthUtil;
+import com.codingShuttle.loveable.loveable.service.DeploymentService;
 import com.codingShuttle.loveable.loveable.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
     //private final AuthUtil authUtil;
+    private final DeploymentService deploymentService;
 
     @GetMapping
     public ResponseEntity<List<ProjectSummaryResponse>> getMyProjects() {
@@ -47,6 +49,11 @@ public class ProjectController {
     public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
         projectService.softDelete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/deploy")
+    public ResponseEntity<DeployResponse> deployProject(@PathVariable Long id) {
+        return ResponseEntity.ok(deploymentService.deploy(id));
     }
 
 }
