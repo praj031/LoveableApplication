@@ -1,0 +1,3 @@
+2	true	90	9	30000	Developer Plan	price_1SojeWQXmNxo98rEDAfyL3rq	true
+3	true	270	27	270000	Pro Plan	price_1SoSykQXmNxo98rEnkg1ehJB	true
+1	true	30	3	10000	Basic Plan	price_1SojaaQXmNxo98rEl7c5zAB4	true
