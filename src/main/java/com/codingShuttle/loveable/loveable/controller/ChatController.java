@@ -3,7 +3,7 @@ package com.codingShuttle.loveable.loveable.controller;
 import com.codingShuttle.loveable.loveable.dto.chat.ChatRequest;
 import com.codingShuttle.loveable.loveable.dto.chat.ChatResponse;
 import com.codingShuttle.loveable.loveable.dto.chat.StreamResponse;
-import com.codingShuttle.loveable.loveable.security.AIGenerationService;
+import com.codingShuttle.loveable.loveable.service.AIGenerationService;
 import com.codingShuttle.loveable.loveable.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

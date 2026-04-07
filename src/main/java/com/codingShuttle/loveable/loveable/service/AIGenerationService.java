@@ -1,4 +1,4 @@
-package com.codingShuttle.loveable.loveable.security;
+package com.codingShuttle.loveable.loveable.service;
 
 
 import com.codingShuttle.loveable.loveable.dto.chat.StreamResponse;

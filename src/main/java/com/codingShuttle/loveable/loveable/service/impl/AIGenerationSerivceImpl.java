@@ -10,7 +10,7 @@ import com.codingShuttle.loveable.loveable.llm.PromptUtils;
 import com.codingShuttle.loveable.loveable.llm.advisor.FileTreeContextAdvisor;
 import com.codingShuttle.loveable.loveable.llm.tools.CodeGenerationTools;
 import com.codingShuttle.loveable.loveable.repository.*;
-import com.codingShuttle.loveable.loveable.security.AIGenerationService;
+import com.codingShuttle.loveable.loveable.service.AIGenerationService;
 import com.codingShuttle.loveable.loveable.security.AuthUtil;
 import com.codingShuttle.loveable.loveable.service.ProjectFileService;
 import com.codingShuttle.loveable.loveable.service.UsageService;
@@ -25,7 +25,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
