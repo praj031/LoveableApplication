@@ -16,19 +16,19 @@
 
 ## 📖 Table of Contents
 
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Architecture](#architecture)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Project Structure](#project-structure)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+- [🎯 Overview](#-overview)
+- [✨ Key Features](#-key-features)
+- [🏗️ Architecture](#-architecture)
+- [🛠️ Tech Stack](#-tech-stack)
+- [📋 Prerequisites](#-prerequisites)
+- [🔧 Installation](#-installation)
+- [⚙️ Configuration](#-configuration)
+- [🚀 Usage](#-usage)
+- [📚 API Documentation](#-api-documentation)
+- [📁 Project Structure](#-project-structure)
+- [🚢 Deployment](#-deployment)
+- [🤝 Contributing](#-contributing)
+- [📝 License](#-license)
 
 ---
 
